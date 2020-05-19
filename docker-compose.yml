@@ -1,0 +1,25 @@
+version: '3'
+services: 
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes: 
+      # Có 2 format trong volume
+      # 1. không điều hướng reference của follder này
+      - /app/node_modules
+      # 2. reference tất cả trong folder hiện tại vào folder /app của container
+      - .:/app
+    ports: 
+      - "3000:3000"
+  # tạo 1 service khác, để chạy test của service web ở trên
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
+    
+    
